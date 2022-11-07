@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/sion-app-frontend/static/css/main.8003e508.css",
+    "main.js": "/sion-app-frontend/static/js/main.0436fa54.js",
+    "index.html": "/sion-app-frontend/index.html",
+    "main.8003e508.css.map": "/sion-app-frontend/static/css/main.8003e508.css.map",
+    "main.0436fa54.js.map": "/sion-app-frontend/static/js/main.0436fa54.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8003e508.css",
+    "static/js/main.0436fa54.js"
+  ]
+}
