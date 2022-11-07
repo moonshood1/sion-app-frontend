@@ -1,12 +1,20 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-import { MainPage } from "./components/mainPage/mainPage";
+import { toast, ToastContainer } from "react-toastify";
+import { AnimatedRoutes } from "./components/animatedRoutes";
+import "react-toastify/dist/ReactToastify.min.css";
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<MainPage />} />
-    </Routes>
+    <>
+      {" "}
+      <AnimatedRoutes />{" "}
+      <ToastContainer
+        position={toast.POSITION.BOTTOM_CENTER}
+        autoClose={2000}
+        pauseOnFocusLoss={false}
+        pauseOnHover={false}
+      />{" "}
+    </>
   );
 };
 

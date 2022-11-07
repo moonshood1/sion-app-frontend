@@ -1,5 +1,4 @@
-const host = "http://localhost:8080/api";
-// const host = "https://payqin-voucher.ew.r.appspot.com/api";
-// const host = "http://192.168.1.31:8080/api";
+// const host = "http://localhost:4000/api";
+const host = "https://sion-app-backend.herokuapp.com/api";
 
 export default host;

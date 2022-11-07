@@ -1,0 +1,5 @@
+{
+    "extends": [
+      "plugin:ft-flow/recommended"
+    ]
+}

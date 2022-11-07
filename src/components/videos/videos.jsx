@@ -1,40 +1,39 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { getVideosAll } from "../../api/getAllVideos";
 import { getCategories } from "../../api/getCategories";
 import { getVideosByCategories } from "../../api/getVideosByCategories";
-import { CardComponent } from "../common/card";
+import { WithHeaderAndFooter } from "../withHeaderAndFooter";
+import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
-import OwlCarousel from "react-owl-carousel";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlay, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { CardComponent } from "../common/card";
 
-export function BestVideos() {
-  const [categories, setCategories] = useState([]);
+export function Videos() {
   const [videos, setVideos] = useState([]);
-  const [activeCategory, setActiveCategory] = useState("");
+  const [categories, setCategories] = useState([]);
   const [isEmptyVideo, setIsEmpyVideo] = useState(false);
 
-  const gotoTheVideo = (id) => {
+  const gotToVideo = (id) => {
     window.location.href = `/#/video/${id}`;
   };
-  const getDefaultVideos = async () => {
-    const resp = await getVideosByCategories("62b334d36b4fff214fe42e7b");
+
+  const loadVideos = async () => {
+    const resp = await getVideosAll();
     if (resp.success) {
       setVideos(resp.videos);
     }
   };
 
-  const getCats = async () => {
+  const loadCategories = async () => {
     const resp = await getCategories();
     if (resp.success) {
       setCategories(resp.categories);
     }
   };
 
-  const getVideosRelated = async (id) => {
+  const filterVideos = async (id) => {
     const resp = await getVideosByCategories(id);
     if (resp.success) {
       setVideos(resp.videos);
@@ -44,27 +43,54 @@ export function BestVideos() {
   };
 
   useEffect(() => {
-    getCats();
-    getDefaultVideos();
+    loadCategories();
+    loadVideos();
   }, []);
-  return (
-    <>
-      <h1 className="container__title" style={{ marginTop: "4%" }}>
-        La chaine
-      </h1>
-      <div className="slider__category">
+
+  const VideoWithHeaderAndFooter = WithHeaderAndFooter(() => (
+    <div className="body__container">
+      <h2
+        className="slide__categories title"
+        style={{ marginBottom: "3%", marginTop: "3%" }}
+        onClick={loadVideos}
+      >
+        Toutes les videos{" "}
+      </h2>
+
+      <OwlCarousel
+        className="owl-theme"
+        responsive={{
+          0: {
+            items: 2,
+          },
+          600: {
+            items: 3,
+          },
+          1000: {
+            items: 5,
+          },
+        }}
+      >
         {categories &&
           categories.map((category) => (
             <motion.span
               className="slide__categories"
               key={category._id}
-              onClick={() => getVideosRelated(category._id)}
+              onClick={() => filterVideos(category._id)}
               whileHover={{ y: 2, color: "#D81B60", fontWeight: "bold" }}
             >
               {category.name}
             </motion.span>
+            // <span
+            //   className="slide__categories"
+            //   key={category._id}
+
+            // >
+            //   {category.name}
+            // </span>
           ))}
-      </div>
+      </OwlCarousel>
+
       <div className="slider__container">
         {!isEmptyVideo && videos ? (
           <OwlCarousel
@@ -82,7 +108,7 @@ export function BestVideos() {
             }}
           >
             {videos.map((video) => (
-              <div onClick={() => gotoTheVideo(video._id)} key={video._id}>
+              <div key={video._id} onClick={() => gotToVideo(video._id)}>
                 <CardComponent
                   title={video.title}
                   description={video.description}
@@ -110,9 +136,8 @@ export function BestVideos() {
           </div>
         )}
       </div>
-      <Link to="/videos" className="link__to_all">
-        Voir toutes les videos
-      </Link>
-    </>
-  );
+    </div>
+  ));
+
+  return <VideoWithHeaderAndFooter />;
 }
